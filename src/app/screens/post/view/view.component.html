@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>View Post</h1>
+
+  <a href="#" routerLink="/post/index" class="btn btn-primary">Back</a>
+
+  <div>
+    <p><strong>ID: </strong>{{ post?.experience_id }}</p>
+  </div>
+
+  <div>
+    <p><strong>Title: </strong>{{ post?.title }}</p>
+  </div>
+
+  <div>
+    <p><strong>Body: </strong>{{ post?.description }}</p>
+  </div>
+  <div>
+    <p><strong>country: </strong>{{ post?.country }}</p>
+  </div>
+  <div>
+    <p><strong>address: </strong>{{ post?.address?.city }} {{ post?.address?.country }}</p>
+  </div>
+  <div><strong>bring: </strong>
+    <p *ngFor="let bring of post?.bring" >{{ bring }}</p>
+  </div>
+  <img  class="images" src="{{ 'https://d15hkoyl5zljrd.cloudfront.net/fit-in/500x500/filters:format(webp)/'+post?.files[0].url}}"/>
+</div>
