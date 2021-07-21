@@ -17,7 +17,7 @@ const EMPTY_CUSTOMER: Customer = {
   status: 2,
   dob: undefined,
   dateOfBbirth: '',
-  ipAddress: '251.237.126.210',
+  // ipAddress: '251.237.126.210',
   type: 2
 };
 
@@ -75,7 +75,7 @@ export class EditCustomerModalComponent implements OnInit, OnDestroy {
       dob: [this.customer.dateOfBbirth, Validators.compose([Validators.nullValidator])],
       userName: [this.customer.userName, Validators.compose([Validators.required])],
       gender: [this.customer.gender, Validators.compose([Validators.required])],
-      ipAddress: [this.customer.ipAddress],
+      // ipAddress: [this.customer.ipAddress],
       type: [this.customer.type, Validators.compose([Validators.required])]
     });
   }
@@ -121,7 +121,7 @@ export class EditCustomerModalComponent implements OnInit, OnDestroy {
     this.customer.email = formData.email;
     this.customer.firstName = formData.firstName;
     this.customer.dateOfBbirth = formData.dob;
-    this.customer.ipAddress = formData.ipAddress;
+    // this.customer.ipAddress = formData.ipAddress;
     this.customer.lastName = formData.lastName;
     this.customer.type = +formData.type;
     this.customer.userName = formData.userName;

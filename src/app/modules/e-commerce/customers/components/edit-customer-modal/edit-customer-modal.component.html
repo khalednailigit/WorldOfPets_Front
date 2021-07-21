@@ -4,7 +4,7 @@
       <ng-container *ngIf="customer">
         <ng-container *ngIf="customer.id">Edit</ng-container>
         <ng-container *ngIf="!customer.id">Create</ng-container>
-        customer
+        utilisateurs
         <ng-container *ngIf="customer.id">'{{customer.firstName}} {{ customer.lastName }}'</ng-container>
       </ng-container>
     </div>
@@ -78,13 +78,13 @@
             <div class="invalid-feedback" *ngIf="controlHasError('required', 'dob')">Please enter <b>Date of Birth</b>
               in 'mm/dd/yyyy' format</div>
           </div>
-          <div class="col-lg-4">
+          <!-- <div class="col-lg-4">
             <label class="form-label">Enter IP Address</label>
             <input type="text" class="form-control form-control-lg form-control-solid" name="ipAddress"
               placeholder="255.255.255.0" autocomplete="off" [class.is-invalid]="isControlInvalid('ipAddress')"
               [class.is-valid]="isControlValid('ipAddress')" formControlName="ipAddress" />
             <div class="valid-feedback" *ngIf="isControlValid('ipAddress')">Login was entered correct</div>
-          </div>
+          </div> -->
         </div>
         <div class="form-group row">
           <div class="col-lg-4">

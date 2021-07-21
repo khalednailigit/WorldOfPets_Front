@@ -13,6 +13,11 @@ const routes: Routes = [
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
       {
+        path: 'publication',
+        loadChildren: () =>
+          import('../modules/publication/publication.module').then((e) => e.PublicationModule),
+      },
+      {
         path: 'builder',
         loadChildren: () =>
           import('./builder/builder.module').then((m) => m.BuilderModule),
