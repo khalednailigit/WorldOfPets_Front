@@ -44,16 +44,16 @@ export class LayoutService {
         this.layoutConfigSubject.next(JSON.parse(configFromLocalStorage));
         return;
       } catch (error) {
-        this.removeConfig();
+        // this.removeConfig();
         console.error('config parse from local storage', error);
       }
     }
     this.layoutConfigSubject.next(DefaultLayoutConfig);
   }
 
-  private removeConfig() {
-    localStorage.removeItem(LAYOUT_CONFIG_LOCAL_STORAGE_KEY);
-  }
+  // private removeConfig() {
+  //   localStorage.removeItem(LAYOUT_CONFIG_LOCAL_STORAGE_KEY);
+  // }
 
   refreshConfigToDefault() {
     this.setConfigWithPageRefresh(undefined);
@@ -69,7 +69,7 @@ export class LayoutService {
 
   setConfig(config: any) {
     if (!config) {
-      this.removeConfig();
+      // this.removeConfig();
     } else {
       localStorage.setItem(
         LAYOUT_CONFIG_LOCAL_STORAGE_KEY,

@@ -147,7 +147,7 @@ export class ProductsComponent
     const modalRef = this.modalService.open(DeleteProductModalComponent);
     modalRef.componentInstance.id = id;
     modalRef.result.then(
-      () => this.productsService.fetch(),
+      () => this.productsService.fetch(), 
       () => { }
     );
   }

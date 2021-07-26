@@ -4,29 +4,30 @@ import { SocialNetworksModel } from './social-networks.model';
 
 export class UserModel extends AuthModel {
   id: number;
-  username: string;
+  prenom: string;
   password: string;
-  fullname: string;
+  nom: string;
+  sexe:string;
   email: string;
-  pic: string;
-  roles: number[];
-  occupation: string;
-  companyName: string;
-  phone: string;
-  address?: AddressModel;
-  socialNetworks?: SocialNetworksModel;
+  login: string;
+  // roles: number[];
+  // occupation: string;
+  // companyName: string;
+  // phone: string;
+  // address?: AddressModel;
+  // socialNetworks?: SocialNetworksModel;
   // personal information
-  firstname: string;
-  lastname: string;
-  website: string;
-  // account information
-  language: string;
-  timeZone: string;
-  communication: {
-    email: boolean,
-    sms: boolean,
-    phone: boolean
-  };
+  // firstname: string;
+  // lastname: string;
+  // website: string;
+  // // account information
+  // language: string;
+  // timeZone: string;
+  // communication: {
+  //   email: boolean,
+  //   sms: boolean,
+  //   phone: boolean
+  // };
   // email settings
   emailSettings: {
     emailNotification: boolean,
@@ -50,16 +51,12 @@ export class UserModel extends AuthModel {
 
   setUser(user: any) {
     this.id = user.id;
-    this.username = user.username || '';
+    this.nom = user.nom || '';
+    this.sexe = user.sexe || '';
     this.password = user.password || '';
-    this.fullname = user.fullname || '';
+    this.prenom = user.prenom || '';
     this.email = user.email || '';
-    this.pic = user.pic || './assets/media/users/default.jpg';
-    this.roles = user.roles || [];
-    this.occupation = user.occupation || '';
-    this.companyName = user.companyName || '';
-    this.phone = user.phone || '';
-    this.address = user.address;
-    this.socialNetworks = user.socialNetworks;
+    this.login = user.login || './assets/media/users/default.jpg';
+  
   }
 }

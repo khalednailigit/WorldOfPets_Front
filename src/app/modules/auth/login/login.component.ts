@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //   password: '',
   // };
   defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
+    email: '',
+    password: '',
   };
   loginForm: FormGroup;
   hasError: boolean;
@@ -81,9 +81,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     const loginSubscr = this.authService
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
-      .subscribe((user: UserModel) => {
+      .subscribe((user) => {
         if (user) {
-          this.router.navigate([this.  returnUrl]);
+          this.router.navigate([this.returnUrl]);
         } else {
           this.hasError = true;
         }

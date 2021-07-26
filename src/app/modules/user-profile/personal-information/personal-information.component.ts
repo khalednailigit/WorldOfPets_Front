@@ -38,13 +38,13 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      pic: [this.user.pic],
-      firstname: [this.user.firstname, Validators.required],
-      lastname: [this.user.lastname, Validators.required],
-      companyName: [this.user.companyName, Validators.required],
-      phone: [this.user.phone, Validators.required],
+      pic: [this.user.login],
+      firstname: [this.user.nom, Validators.required],
+      lastname: [this.user.prenom, Validators.required],
+      companyName: [this.user.nom, Validators.required],
+      phone: [this.user.nom, Validators.required],
       email: [this.user.email, Validators.compose([Validators.required, Validators.email])],
-      website: [this.user.website, Validators.required]
+      website: [this.user.email, Validators.required]
     });
   }
 
@@ -71,15 +71,15 @@ export class PersonalInformationComponent implements OnInit, OnDestroy {
   }
 
   getPic() {
-    if (!this.user.pic) {
+    if (!this.user.login) {
       return 'none';
     }
 
-    return `url('${this.user.pic}')`;
+    return `url('${this.user.login}')`;
   }
 
   deletePic() {
-    this.user.pic = '';
+    this.user.login = '';
   }
 
   // helpers for View

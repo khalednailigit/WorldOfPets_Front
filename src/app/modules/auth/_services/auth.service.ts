@@ -6,6 +6,7 @@ import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class AuthService implements OnDestroy {
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+  public authLocalStorageToken ;
 
   // public fields
   currentUser$: Observable<UserModel>;
@@ -32,7 +33,8 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private authHttpService: AuthHTTPService,
-    private router: Router
+    private router: Router,
+    public http: HttpClient, 
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.currentUserSubject = new BehaviorSubject<UserModel>(undefined);
@@ -45,12 +47,12 @@ export class AuthService implements OnDestroy {
   // public methods
   login(email: string, password: string): Observable<UserModel> {
     this.isLoadingSubject.next(true);
-    return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
-        const result = this.setAuthFromLocalStorage(auth);
-        return result;
+    return this.authHttpService.login(email, password).pipe( 
+      map((auth) => {
+        const result = this.setAuthFromLocalStorage(auth.token);
+        return result; 
       }),
-      switchMap(() => this.getUserByToken()),
+      // switchMap(() => this.getUserByToken()),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
@@ -60,7 +62,7 @@ export class AuthService implements OnDestroy {
   }
 
   logout() {
-    localStorage.removeItem(this.authLocalStorageToken);
+    localStorage.removeItem("token");
     this.router.navigate(['/auth/login'], {
       queryParams: {},
     });
@@ -85,21 +87,19 @@ export class AuthService implements OnDestroy {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+  today: Date = new Date();
 
   // need create new user then login
-  registration(user: UserModel): Observable<any> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.createUser(user).pipe(
-      map(() => {
-        this.isLoadingSubject.next(false);
-      }),
-      switchMap(() => this.login(user.email, user.password)),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
+  registration(user): Observable<any> {
+    user.CreateAt=this.today;
+    user.UpdateAt=this.today;
+		let headers = new HttpHeaders();
+    headers = headers.append("Content-Type", "application/json");
+    headers = headers.append("Authorization",'Bearer '+`${localStorage.getItem('token')}`);
+		return this.http.post(environment.API_URL + "api/addUtilisateur",
+			user, { headers: headers }).pipe(map(res => {
+				return res;
+			}));
   }
 
   forgotPassword(email: string): Observable<boolean> {
@@ -110,10 +110,10 @@ export class AuthService implements OnDestroy {
   }
 
   // private methods
-  private setAuthFromLocalStorage(auth: AuthModel): boolean {
+  private setAuthFromLocalStorage(auth): boolean {
     // store auth accessToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-    if (auth && auth.accessToken) {
-      localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
+    if (auth ) {
+      localStorage.setItem("token",auth);
       return true;
     }
     return false;

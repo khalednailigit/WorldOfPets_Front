@@ -1,23 +1,18 @@
 // tslint:disable:no-string-literal
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import { ProductsService } from '../_services';
+// import { usersService } from '../_services';
 import {
   GroupingState,
   PaginatorState,
   SortState,
-  IDeleteAction,
-  IDeleteSelectedAction,
-  IFetchSelectedAction,
-  IUpdateStatusForSelectedAction,
-  ISortView,
   IFilterView,
-  IGroupingView,
-  ISearchView,
 } from '../../../_metronic/shared/crud-table';
+import { UserService } from '../_services/user.service';
+import { DeleteUserComponent } from '../delete-user/delete-user.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -26,14 +21,6 @@ import {
 export class UsersComponent implements
 OnInit,
 OnDestroy,
-// IDeleteAction,
-// IDeleteSelectedAction,
-// IFetchSelectedAction,
-// IUpdateStatusForSelectedAction,
-// ISortView,
-// IFilterView,
-// IGroupingView,
-// ISearchView,
 IFilterView {
 paginator: PaginatorState;
 sorting: SortState;
@@ -46,21 +33,23 @@ private subscriptions: Subscription[] = []; // Read more: => https://brianflove.
 constructor(
   private fb: FormBuilder,
   private modalService: NgbModal,
-  // public productsService: ProductsService
+  public userService: UserService,
+  private _cdr: ChangeDetectorRef, 
 ) { }
-
+items;
 // angular lifecircle hooks
 ngOnInit(): void {
   this.filterForm();
-  // this.productsService.fetch();
-  // const sb = this.productsService.isLoading$.subscribe(res => this.isLoading = res);
-  // this.subscriptions.push(sb);
-  // this.grouping = this.productsService.grouping;
-  // this.paginator = this.productsService.paginator;
-  // this.sorting = this.productsService.sorting;
-  // this.productsService.fetch();
+ 
+  this.get();
 }
-
+get(){
+  this.userService.getAll().subscribe(res =>{
+    console.log(res);
+    this.items=res;
+    this.changeStatus();
+  })
+}
 ngOnDestroy() {
   this.subscriptions.forEach((sb) => sb.unsubscribe());
 }
@@ -81,7 +70,15 @@ filterForm() {
     this.filterGroup.controls.condition.valueChanges.subscribe(() => this.filter())
   );
 }
+changeStatus(): void {
 
+  setTimeout(() => {
+
+    this._cdr.detectChanges()
+    this._cdr.markForCheck()
+
+  }, 500);
+}
 filter() {
   const filter = {};
   const status = this.filterGroup.get('status').value;
@@ -93,7 +90,7 @@ filter() {
   if (condition) {
     filter['condition'] = condition;
   }
-  // this.productsService.patchState({ filter });
+  // this.usersService.patchState({ filter });
 }
 
 
@@ -110,45 +107,18 @@ sort(column: string) {
   } else {
     sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
   }
-  // this.productsService.patchState({ sorting });
+  // this.usersService.patchState({ sorting });
 }
 
 // actions
-// delete(id: number) {
-//   const modalRef = this.modalService.open(DeleteProductModalComponent);
-//   modalRef.componentInstance.id = id;
-//   modalRef.result.then(
-//     () => this.productsService.fetch(),
-//     () => { }
-//   );
-// }
+delete(id: number) {
+  const modalRef = this.modalService.open(DeleteUserComponent);
+  modalRef.componentInstance.id = id;
+  modalRef.result.then(
+    () => this.get(),
+    () => { }
+  );
+}
 
-// deleteSelected() {
-//   const modalRef = this.modalService.open(DeleteProductsModalComponent);
-//   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-//   modalRef.result.then(
-//     () => this.productsService.fetch(),
-//     () => { }
-//   );
-// }
 
-// updateStatusForSelected() {
-//   const modalRef = this.modalService.open(
-//     UpdateProductsStatusModalComponent
-//   );
-//   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-//   modalRef.result.then(
-//     () => this.productsService.fetch(),
-//     () => { }
-//   );
-// }
-
-// fetchSelected() {
-//   const modalRef = this.modalService.open(FetchProductsModalComponent);
-//   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-//   modalRef.result.then(
-//     () => this.productsService.fetch(),
-//     () => { }
-//   );
-// }
 }

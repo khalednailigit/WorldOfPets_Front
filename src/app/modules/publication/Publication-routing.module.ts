@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListpublicationComponent } from './listpublication/listpublication.component';
 import { PublicationComponent } from './publication.component';
+import { ListerechercheComponent } from './listerecherche/listerecherche.component';
 
 
 const routes: Routes = [
@@ -14,21 +15,10 @@ const routes: Routes = [
                 component: ListpublicationComponent,
             },
             {
-                path: 'products',
-                // component: ProductsComponent,
+                path: 'listerecherche',
+                component: ListerechercheComponent,
             },
-            {
-                path: 'product/add',
-                // component: ProductEditComponent
-            },
-            {
-                path: 'product/edit',
-                // component: ProductEditComponent
-            },
-            {
-                path: 'product/edit/:id',
-                // component: ProductEditComponent
-            },
+            
             { path: '', redirectTo: 'customers', pathMatch: 'full' },
             { path: '**', redirectTo: 'customers', pathMatch: 'full' },
         ],

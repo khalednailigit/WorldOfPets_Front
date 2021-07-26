@@ -1,96 +1,110 @@
 <div class="card card-custom gutter-b">
-        <div class="card-header">
-          <div class="card-title">
-            <h3 class="card-label">Products list</h3>
-          </div>
-          <div class="card-toolbar">
-            <a
-              type="button"
-              class="btn btn-primary"
-              routerLink="/ecommerce/product/add"
-              >New Product</a
-            >
-          </div>
-        </div>
-        <div class="card-body">
-          <!-- begin: Filtration form -->
-          <div class="form form-label-right">
-            <div class="form-group row">
-              <div class="col-lg-4">
-                <div class="row" >
-                  <div class="col-lg-6">
-                    <select
-                      class="form-control"
-                      name="status"
-                      placeholder="Filter by Status"
-                    >
-                      <option value="">All</option>
-                      <option value="1">Selling</option>
-                      <option value="2">Sold</option></select
-                    ><small class="form-text text-muted"
-                      ><b>Filter</b> by Status</small
-                    >
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">User Management</h3>
+    </div>
+    <div class="card-toolbar">
+      <a
+        type="button"
+        class="btn btn-primary"
+        routerLink="/user-management/add"
+        >Nouvel Utilisateur</a
+      >
+    </div>
+
+
+
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+          <!-- <th class="selection-cell-header" data-row-selection="true">
+                <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
+                    [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
+              </th>
+              <th>
+                ID
+                <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                  (sort)="sort($event)"></app-sort-icon>
+              </th> -->
+          <!-- <th>
+            ID
+          </th> -->
+          <th>
+            Nom
+          </th>
+          <th>
+            prenom
+          </th>
+          <th>
+            Sexe
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Login
+          </th>
+          <th>Les Actions</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of items;  let i = index">
+              <td data-field="CompanyName" aria-label="Upton-Dach" class="datatable-cell"><span style="width: 250px;">
+                  <div class="d-flex align-items-center">
+                    <div class="symbol symbol-50 symbol-sm flex-shrink-0">
+                      <div *ngIf="user.sexe === 'H'" class="symbol-label"> <img class="h-75 align-self-end"
+                          src="{{(user.login) ? user.login : './assets/media/svg/avatars/001-boy.svg'}}" alt="photo"> </div>
+                      <div *ngIf="user.sexe === 'F'" class="symbol-label"> <img class="h-75 align-self-end"
+                          src="{{(user.login) ? user.login : './assets/media/svg/avatars/002-girl.svg'}}"  alt="photo"> </div>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ user.nom }} {{ user.prenom }}</div>
+                    </div>
                   </div>
-                
-                </div>
-              </div>
-              <div class="col-lg-2" >
-                <input
-                  type="text"
-                  class="form-control"
-                  name="searchText"
-                  placeholder="Search"
-                  value=""
-                /><small class="form-text text-muted"
-                  ><b>Search</b> in all fields</small
-                >
-              </div>
-            </div>
-          </div>
-        
-          <div class="table-responsive angular-bootstrap-table">
-            <table
-              class="table table-head-custom table-vertical-center overflow-hidden"
-            >
-              <thead>
-               
-                <th>
-                  VIN CODE (ID)
-                 
-                </th>
-                <th>
-                  MANUFACTURE
-                </th>
-                <th>
-                  MODEL
-                </th>
-                <th>
-                  YEAR
-                </th>
-                <th>
-                  COLOR
-                </th>
-                <th>
-                  PRICE
-                </th>
-                <th>
-                  STATUS
-                </th>
-                <th>
-                  CONDITION
-                </th>
-                <th>ACTIONS</th>
-              </thead>
-            
-            </table>
-          </div>
-          <!-- end: Table -->
-          <!-- <app-paginator
-            class="d-flex justify-content-between align-items-center flex-wrap"
-            [paginator]="paginator"
-            [isLoading]="isLoading"
-            (paginate)="paginate($event)"
-          ></app-paginator> -->
-        </div>
-      </div>
-      
+                </span></td>
+
+
+            <td>{{ user.nom }}</td>
+            <td>{{ user.prenom }}</td>
+           
+            <td>
+              <ng-container> <span style="color: #ffffff00;">**</span>
+                <span *ngIf="user.sexe === 'H'">
+                  <i style="color: #0C3D9C;" class="fa fas fa-male  icon-xl"></i>
+                </span>
+                <span *ngIf="user.sexe === 'F'">
+                  <i style="color: #FF8AB4;" class="fa fas fa-female  icon-xl "></i>
+
+                </span>
+
+              </ng-container>
+              <!-- {{ responsable.emailVerified }} -->
+            </td>
+            <td>{{ user.email }}</td>
+            <!-- <td>{{ user.login }}</td>          -->
+            <td>
+              <a title="Edit user" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                [routerLink]="'/user-management/edit/' + user.id">
+                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary">
+                </span>
+              </a>
+              <a title="Delete user" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                (click)="delete(user.id)">
+                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger">
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- end: Table -->
+    <!-- <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+      [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator> -->
+  </div>
+</div>

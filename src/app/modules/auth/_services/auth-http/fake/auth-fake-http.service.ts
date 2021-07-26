@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -18,10 +18,11 @@ export class AuthHTTPService {
 
   // public methods
   login(email: string, password: string): Observable<any> {
+
     const notFoundError = new Error('Not Found');
     if (!email || !password) {
       return of(notFoundError);
-    }
+    } 
 
     return this.getAllUsers().pipe(
       map((result: UserModel[]) => {
@@ -49,11 +50,10 @@ export class AuthHTTPService {
   }
 
   createUser(user: UserModel): Observable<any> {
-    user.roles = [2]; // Manager
     user.accessToken = 'access-token-' + Math.random();
     user.refreshToken = 'access-token-' + Math.random();
     user.expiresIn = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
-    user.pic = './assets/media/users/default.jpg';
+    user.login = './assets/media/users/default.jpg';
 
     return this.http.post<UserModel>(API_USERS_URL, user);
   }

@@ -45,7 +45,7 @@ export class LayoutInitService {
       updatedConfig.subheader.fixed = false;
     }
 
-    this.layout.setConfigWithoutLocalStorageChanges(updatedConfig);
+    // this.layout.setConfigWithoutLocalStorageChanges(updatedConfig);
   }
 
   private initLayout() {
